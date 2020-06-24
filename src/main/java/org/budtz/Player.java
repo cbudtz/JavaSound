@@ -10,7 +10,11 @@ public class Player {
      *
      * @param resourceName filename of file in resourceFolder
      */
-    public void playSound(String resourceName) {
+    public void playSoundAsync(String resourceName){
+        new Thread(()->this.playSoundBlocking(resourceName)).start();
+    }
+
+    public void playSoundBlocking(String resourceName) {
         CountDownLatch syncLatch = new CountDownLatch(1);
         InputStream resourceAsStream = this.getClass().getResourceAsStream("/" + resourceName);
         try (AudioInputStream stream = AudioSystem.getAudioInputStream(resourceAsStream)) {
