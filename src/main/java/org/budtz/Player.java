@@ -6,13 +6,10 @@ import java.io.InputStream;
 import java.util.concurrent.CountDownLatch;
 
 public class Player {
-
-    public static void main(String[] args) {
-        new Thread(()->
-        new Player().playSound("You Shall Not Pass.wav")
-        ).start();
-
-    }
+    /**
+     *
+     * @param resourceName filename of file in resourceFolder
+     */
     public void playSound(String resourceName) {
         CountDownLatch syncLatch = new CountDownLatch(1);
         InputStream resourceAsStream = this.getClass().getResourceAsStream("/" + resourceName);
