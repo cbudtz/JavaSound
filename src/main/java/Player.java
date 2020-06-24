@@ -5,16 +5,17 @@ import java.util.concurrent.CountDownLatch;
 
 public class Player {
 
-    public static void main(String[] args) throws InterruptedException {
-        new Player().playSound();
+    public static void main(String[] args) {
+        new Thread(()->
+        new Player().playSound("You Shall Not Pass.wav")
+        ).start();
 
     }
-    private void playSound() throws InterruptedException {
+    private void playSound(String resourceName) {
         CountDownLatch syncLatch = new CountDownLatch(1);
-        InputStream resourceAsStream = this.getClass().getResourceAsStream("/You Shall Not Pass.wav");
+        InputStream resourceAsStream = this.getClass().getResourceAsStream("/" + resourceName);
         try (AudioInputStream stream = AudioSystem.getAudioInputStream(resourceAsStream)) {
             Clip clip = AudioSystem.getClip();
-
             // Listener which allow method return once sound is completed
             clip.addLineListener(e -> {
                 if (e.getType() == LineEvent.Type.STOP) {
@@ -23,14 +24,9 @@ public class Player {
             });
             clip.open(stream);
             clip.start();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+            syncLatch.await();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InterruptedException e) {
             e.printStackTrace();
         }
-
-        syncLatch.await();
     }
 }
