@@ -11,7 +11,7 @@ public class Player {
         ).start();
 
     }
-    private void playSound(String resourceName) {
+    public void playSound(String resourceName) {
         CountDownLatch syncLatch = new CountDownLatch(1);
         InputStream resourceAsStream = this.getClass().getResourceAsStream("/" + resourceName);
         try (AudioInputStream stream = AudioSystem.getAudioInputStream(resourceAsStream)) {
