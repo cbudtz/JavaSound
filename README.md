@@ -22,6 +22,8 @@
         </dependency>
     </dependencies>
 ## Usage:
+Put .wav file in /resources folder
+
     import org.budtz.Player;
     
     Player player = new Player();
